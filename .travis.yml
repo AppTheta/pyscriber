@@ -1,15 +1,24 @@
 language: python
 python:
-  - "2.7"
+- '2.7'
 install:
-  - "sudo apt-get update"
-  - "sudo apt-get install python-all-dev pandoc"
-  - "pandoc -f markdown -t rst -o README.rst README.md"
-  - "pip install tox --use-mirrors"
+- sudo apt-get update
+- sudo apt-get install python-all-dev pandoc
+- pandoc -f markdown -t rst -o README.rst README.md
+- pip install tox --use-mirrors
 script: tox
 env:
-  - TOXENV=py26
-  - TOXENV=py27
-  - TOXENV=py33
-  - TOXENV=py34
-  - TOXENV=pypy
+- TOXENV=py26
+- TOXENV=py27
+- TOXENV=py33
+- TOXENV=py34
+- TOXENV=pypy
+deploy:
+  provider: pypi
+  user: jbraegger
+  on:
+    all_branches: true
+    repo: Scriber/pyscriber
+    tags: true
+  password:
+    secure: VkEAdrhUMy/tkWmsD/55XJrtyhEGieqDJ9SXABhggmnWgoRrJt3ghk400LHilRuZMnJu3a6y4sAxuxX6Ch3Dp9EnQshdqfIu3kZdOLLJQafo9ueyecxI5g+1XbtnaUxB5rgYiIEx/LzUSlcd18cZyr1CVn6hSa6fMmp5l8RDWFo=
