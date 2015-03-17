@@ -40,8 +40,10 @@ class Scriber(object):
         """
         event = {
             "event_type": "record_event",
-            "event_label": label,
-            "event_info": properties,
+            "event_info": {
+                "label": label,
+                "properties": properties,
+            },
         }
         if timestamp is not None:
             event["event_time"] = timestamp.isoformat()
