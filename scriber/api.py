@@ -46,7 +46,7 @@ class Scriber(object):
             },
         }
         if timestamp is not None:
-            event["event_time"] = timestamp.isoformat()
+            event["event_time"] = timestamp
         return self.record_events(user_id, [event, ])
 
     def record_events(self, user_id, events):
