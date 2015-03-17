@@ -27,28 +27,37 @@ class Scriber(object):
         self.api_key = api_key
         self.app_id = app_id
 
-    def record_event(self, user_id, label, timestamp=None):
+    def record_event(self, user_id, label, properties={}, timestamp=None):
         """
         Records a single "record_event" event to scriber.
-        See http://scriber.io/docs/#/?tab=Web for event details
+        See http://scriber.io/docs/#/?tab=API for event details
+
+        :param user_id: The user to track with this event.
+        :param label: The name of the event.
+        :param properties: (optional) A key-value set of subkeys to track
+        :param timestamp: (optional) An ISO 8601 formatted timestamp for
+            the event
         """
         event = {
             "event_type": "record_event",
-            "event_info": {
-                "label": label
-            },
+            "event_label": label,
+            "event_info": properties,
         }
         if timestamp is not None:
-            event["event_time"] = timestamp
+            event["event_time"] = timestamp.isoformat()
         return self.record_events(user_id, [event, ])
 
     def record_events(self, user_id, events):
         """
-        Records multiple events to scriber.
+        Records multiple events to scriber, grouped together for performance
 
-        events is a list of events as described in Web documentation
+        Events is a list of events as described in API documentation
 
-        See http://scriber.io/docs/#/?tab=Web for event details
+        See http://scriber.io/docs/#/?tab=API for event details
+
+        :param user_id: The user to track with this event.
+        :param events: A dictionary representation of the event
+            (see api docs for more detail)
         """
         args = {
             "user_id":     user_id,
@@ -66,4 +75,6 @@ class Scriber(object):
         client = new_default_http_client()
         content, code = client.request("POST", SCRIBER_URL, headers, post_data)
         if code != 200:
-            raise error.APIError("There was a problem creating the data")
+            raise error.APIError(
+                "There was a problem creating the data: {0}, {1}".format(
+                    content, code))
