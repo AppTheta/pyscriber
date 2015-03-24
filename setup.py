@@ -32,6 +32,7 @@ args = dict(
     author_email='rckclmbr@gmail.com',
     packages=find_packages(),
     include_package_data=True,
+    package_data={'scriber': ['data/ca-certificates.crt',]},
     url='https://github.com/scriber/scriber.py',
     license='Apache 2.0',
     description='Python client API for scriber.io',
