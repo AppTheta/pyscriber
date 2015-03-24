@@ -3,6 +3,8 @@ Scriber.py
 
 A Python wrapper for the the Scriber API. See scriber.io
 
+[![Build Status](https://travis-ci.org/Scriber/pyscriber.svg?branch=master)](https://travis-ci.org/Scriber/pyscriber)
+
 
 Install
 -------
