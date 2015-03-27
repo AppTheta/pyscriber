@@ -1,3 +1,4 @@
+import datetime
 import json
 
 import scriber
@@ -27,7 +28,7 @@ class Scriber(object):
         self.api_key = api_key
         self.app_id = app_id
 
-    def record_event(self, user_id, label, properties={}, timestamp=None):
+    def record_event(self, user_id, label, properties={}, event_time=None):
         """
         Records a single "record_event" event to scriber.
         See http://scriber.io/docs/#/?tab=API for event details
@@ -35,18 +36,20 @@ class Scriber(object):
         :param user_id: The user to track with this event.
         :param label: The name of the event.
         :param properties: (optional) A key-value set of subkeys to track
-        :param timestamp: (optional) An ISO 8601 formatted timestamp for
+        :param event_time: (optional) An RFC 3339 formatted timestamp for
             the event
         """
+        if event_time is None:
+            event_time = datetime.datetime.utcnow().isoformat("T") + "Z"
+
         event = {
             "event_type": "record_event",
+            "event_time": event_time,
             "event_info": {
                 "label": label,
                 "properties": properties,
             },
         }
-        if timestamp is not None:
-            event["event_time"] = timestamp
         return self.record_events(user_id, [event, ])
 
     def record_events(self, user_id, events):
